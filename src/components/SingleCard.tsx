@@ -1,4 +1,5 @@
 import { Card } from "../interfaces/appInterfaces";
+import './SingleCard.css';
 
 interface Props {
     card: Card;
@@ -14,7 +15,7 @@ const SingleCard = ({ card, handleChoise, flipped }: Props) => {
 
     return (
         <div className='card'>
-            <div>
+            <div className={flipped ? 'flipped' : ''}>
                 <img className='front' src={card.src} alt='card front' />
                 <img
                     className='back'

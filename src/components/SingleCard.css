@@ -1,5 +1,5 @@
 .card { 
-    position: absolute;
+    position: relative;
 }
 
 .card img {
@@ -7,4 +7,14 @@
     display: block;
     border: 2px solid #fff;
     border-radius: 6px;
+}
+
+/* front of card - the picture */
+.card .front {
+    transform: rotateX(90deg);
+    position: absolute;
+}
+
+.flipped .front {
+    transform: rotateX(0deg);
 }
