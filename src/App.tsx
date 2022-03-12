@@ -1,15 +1,15 @@
-import { useState } from 'react';
 import './App.css';
-import SingleCard from './components/SingleCard';
+import { useEffect, useState } from 'react';
 import { Card } from './interfaces/appInterfaces';
+import SingleCard from './components/SingleCard';
 
 const cardImages = [
-  { 'src': '/img/helmet-1.png' },
-  { 'src': '/img/potion-1.png' },
-  { 'src': '/img/ring-1.png' },
-  { 'src': '/img/scroll-1.png' },
-  { 'src': '/img/shield-1.png' },
-  { 'src': '/img/sword-1.png' },
+  { 'src': '/img/helmet-1.png', matched: false },
+  { 'src': '/img/potion-1.png', matched: false },
+  { 'src': '/img/ring-1.png', matched: false },
+  { 'src': '/img/scroll-1.png', matched: false },
+  { 'src': '/img/shield-1.png', matched: false },
+  { 'src': '/img/sword-1.png', matched: false },
 ];
 
 const App = () => {
@@ -32,6 +32,34 @@ const App = () => {
     choiseOne ? setChoiseTwo(card) : setChoiseOne(card);
   }
 
+  useEffect(() => {
+    if (choiseOne && choiseTwo) {
+
+      if (choiseOne.src === choiseTwo.src) {
+        setCards(prevCards => {
+          return prevCards.map((card: Card) => {
+            if (card.src === choiseOne.src) {
+              return { ...card, matched: true };
+            } else {
+              return card;
+            }
+          })
+        });
+        resetTurn();
+      } else {
+        setTimeout(() => {
+          resetTurn();
+        }, 1000);
+      }
+    }
+  }, [choiseOne, choiseTwo]);
+
+  const resetTurn = () => {
+    setChoiseOne(null);
+    setChoiseTwo(null);
+    setTurns(prevTurns => prevTurns + 1);
+  }
+
   return (
     <div className="App">
       <h1>Magic Match</h1>
@@ -43,6 +71,7 @@ const App = () => {
             key={card.id}
             card={card}
             handleChoise={handleChoise}
+            flipped={card === choiseOne || card === choiseTwo || card.matched}
           />
         ))}
       </div>

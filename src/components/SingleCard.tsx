@@ -3,9 +3,10 @@ import { Card } from "../interfaces/appInterfaces";
 interface Props {
     card: Card;
     handleChoise: (card: Card) => void;
+    flipped: boolean;
 }
 
-const SingleCard = ({ card, handleChoise }: Props) => {
+const SingleCard = ({ card, handleChoise, flipped }: Props) => {
 
     const handleClick = () => {
         handleChoise(card);
