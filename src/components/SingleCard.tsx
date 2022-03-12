@@ -5,12 +5,13 @@ interface Props {
     card: Card;
     handleChoise: (card: Card) => void;
     flipped: boolean;
+    disabled: boolean;
 }
 
-const SingleCard = ({ card, handleChoise, flipped }: Props) => {
+const SingleCard = ({ card, handleChoise, flipped, disabled }: Props) => {
 
     const handleClick = () => {
-        handleChoise(card);
+        if (!disabled) { handleChoise(card); }
     }
 
     return (
