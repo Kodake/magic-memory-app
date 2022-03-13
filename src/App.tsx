@@ -2,6 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import { Card } from './interfaces/appInterfaces';
 import SingleCard from './components/SingleCard';
+import Swal from 'sweetalert2';
 
 const cardImages = [
   { 'src': '/img/helmet-1.png', matched: false },
@@ -18,7 +19,7 @@ const App = () => {
   const [turns, setTurns] = useState(0);
   const [choiseOne, setChoiseOne] = useState<Card | null>(null);
   const [choiseTwo, setChoiseTwo] = useState<Card | null>(null);
-  const [disabled, setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState(false);
 
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
@@ -41,13 +42,9 @@ const App = () => {
       if (choiseOne.src === choiseTwo.src) {
         setCards(prevCards => {
           return prevCards.map((card: Card) => {
-            if (card.src === choiseOne.src) {
-              return { ...card, matched: true };
-            } else {
-              return card;
-            }
+            return card.src === choiseOne.src || card.src === choiseTwo.src ? {...card, matched: true } : card;
           })
-        });
+        });        
         resetTurn();
       } else {
         setTimeout(() => {
@@ -64,6 +61,18 @@ const App = () => {
     setDisabled(false);
   }
 
+  // Implement in the future
+  const finishGame = (cards: Card[]) => {
+    if (cards.every(card => card.matched === true)) {
+      Swal.fire({
+        title: 'Congratulations!',
+        text: `You won in ${turns} turns!`,
+        icon: 'success',
+        confirmButtonText: 'Play again'
+      });
+    }
+  }
+
   useEffect(() => {
     shuffleCards();
   }, []);
@@ -71,6 +80,7 @@ const App = () => {
   return (
     <div className="App">
       <h1>Magic Match</h1>
+
       <button onClick={shuffleCards}>New Game</button>
 
       <div className="card-grid">
